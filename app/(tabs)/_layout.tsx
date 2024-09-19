@@ -1,37 +1,49 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Tabs } from "expo-router";
+import { BlurView } from "expo-blur";
+import { Ionicons } from "@expo/vector-icons";
+import { COLORS } from "@/assets/themes/colors";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+const _layout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-      }}>
+        tabBarHideOnKeyboard: true,
+        tabBarShowLabel: false,
+        tabBarStyle: styles.tabBarStyle,
+        tabBarBackground: () => <BlurView style={styles.blurViewStyle} />,
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <Ionicons name="home-sharp" size={30} color={COLORS.orange} />
           ),
         }}
       />
     </Tabs>
   );
-}
+};
+
+export default _layout;
+
+const styles = StyleSheet.create({
+  tabBarStyle: {
+    height: 90,
+    position: "absolute",
+    backgroundColor: "rgba(2,21,38,0.5)",
+    borderTopWidth: 0,
+    elevation: 0,
+    borderTopColor: "transparent",
+  },
+  blurViewStyle: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+});
