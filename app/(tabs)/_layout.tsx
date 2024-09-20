@@ -20,7 +20,23 @@ const _layout = () => {
         name="home"
         options={{
           tabBarIcon: ({ focused }) => (
-            <Ionicons name="home-sharp" size={30} color={COLORS.orange} />
+            <Ionicons
+              name="home-sharp"
+              size={30}
+              color={focused ? COLORS.orange : COLORS.grey}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="favorite"
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="heart"
+              size={30}
+              color={focused ? COLORS.orange : COLORS.grey}
+            />
           ),
         }}
       />

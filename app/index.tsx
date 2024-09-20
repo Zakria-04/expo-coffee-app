@@ -35,5 +35,6 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 20,
     marginTop: 20,
+    color: COLORS.white,
   },
 });

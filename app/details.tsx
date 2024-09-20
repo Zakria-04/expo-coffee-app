@@ -19,6 +19,7 @@ const Details = () => {
   const { data } = useLocalSearchParams();
   const getData = JSON.parse(data as string);
   const {
+    id,
     name,
     description,
     detailsImg,
@@ -30,7 +31,7 @@ const Details = () => {
   } = getData;
 
   const [sizeBorderSelected, setSizeBorderSelected] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(prices[0].price);
 
   return (
     <View style={styles.container}>
@@ -40,9 +41,11 @@ const Details = () => {
           style={styles.detailsImage}
           imageStyle={styles.detailsImageStyle}
         >
-          <View style={styles.detailsHeaderContainer}>
-            <DetailsHeader />
-          </View>
+          <DetailsHeader
+            backBtn="arrow-back-outline"
+            coffeeID={id}
+            favorite={favorite}
+          />
           <View style={styles.detailsImgFooter}>
             <Text style={styles.productName}>{name}</Text>
             <View>
@@ -87,7 +90,7 @@ const Details = () => {
             </TouchableOpacity>
           ))}
         </View>
-        <DetailsFooter totalPrice={totalPrice} />
+        <DetailsFooter totalPrice={totalPrice} coffeeID={id} />
       </ScrollView>
     </View>
   );
@@ -110,8 +113,8 @@ const styles = StyleSheet.create({
   detailsImgFooter: {
     backgroundColor: "rgba(0,0,0,.6)",
     width: "100%",
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 25,
+    borderBottomLeftRadius: 25,
     height: 100,
     position: "absolute",
     bottom: 0,
@@ -124,11 +127,6 @@ const styles = StyleSheet.create({
   productName: {
     color: COLORS.orange,
     fontSize: 25,
-  },
-  detailsHeaderContainer: {
-    marginTop: 50,
-    marginRight: 10,
-    marginLeft: 10,
   },
   productInfo: {
     fontSize: 20,
@@ -151,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     marginTop: 60,
-    marginBottom: 60
+    marginBottom: 60,
   },
   productSize: {
     fontSize: 25,

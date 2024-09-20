@@ -1,19 +1,27 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { COLORS } from "@/assets/themes/colors";
+import { useStore } from "@/store/store";
 
 interface DetailsFooterProps {
   totalPrice: number;
+  coffeeID: number;
 }
 
 const DetailsFooter: React.FC<DetailsFooterProps> = (props) => {
+  const { coffeeList } = useStore();
+  const { addToFavorite } = useStore();
   return (
     <View style={styles.container}>
       <Text style={styles.totalPrice}>
         {`Total price: ${props.totalPrice}`}
         <Text style={{ color: COLORS.orange }}>$</Text>
       </Text>
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity
+        onPress={() => {
+          addToFavorite(props.coffeeID);
+        }}
+      >
         <View style={styles.cartContainer}>
           <Text style={styles.cart}>Add to cart</Text>
         </View>
