@@ -33,7 +33,6 @@ const Category: React.FC<CategoryProps> = (props) => {
         (cate: any) => cate.category === val
       );
       props.setData(filteredItem);
-      console.log("filter", filteredItem);
     }
   };
 

@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import React from "react";
 import { COLORS } from "@/assets/themes/colors";
+import { router } from "expo-router";
+import { navigateToScreen } from "@/assets/res/utils";
 
 interface ProductData {
   id: number;
@@ -36,7 +38,11 @@ const Products: React.FC<ProductsProps> = (props) => {
   const renderData: ListRenderItem<ProductData> = ({ item }) => {
     return (
       <View style={styles.itemContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigateToScreen("/details", item);
+          }}
+        >
           <Image source={item.image} style={styles.itemImage} />
           <Text style={styles.itemName}>{item.name}</Text>
           <Text style={styles.itemPrice}>{item.prices[0].price} $</Text>

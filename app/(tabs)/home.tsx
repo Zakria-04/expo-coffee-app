@@ -16,7 +16,7 @@ const Home = () => {
       <SafeAreaView>
         <ScrollView>
           <Header />
-          <SearchItem />
+          <SearchItem setData={setData} coffeeList={CoffeeList} />
           <Category setData={setData} coffeeList={CoffeeList} />
           <RenderProducts data={data} />
         </ScrollView>

@@ -1,14 +1,37 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { COLORS } from "@/assets/themes/colors";
 
-const SearchItem = () => {
+interface SearchItemProps {
+  setData: any;
+  coffeeList: any;
+}
+
+const SearchItem: React.FC<SearchItemProps> = (props) => {
+  const [search, setSearch] = useState("");
+
+  const filterDataBySearch = (category: any) => {
+    if (search != "") {
+      const filter = props.coffeeList.filter((item: any) =>
+        item.category.toLowerCase().includes(category.toLowerCase())
+      );
+      props.setData(filter);
+    } else if (search === "") {
+      props.setData(props.coffeeList);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="search here..."
         placeholderTextColor={COLORS.grey}
+        value={search}
+        onChangeText={(value) => {
+          setSearch(value);
+          filterDataBySearch(value);
+        }}
       />
     </View>
   );
