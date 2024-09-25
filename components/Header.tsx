@@ -9,7 +9,7 @@ const Header = () => {
     <View style={styles.container}>
       <Ionicons name="menu-outline" size={60} color={COLORS.orange} />
       <Text style={styles.logo}>Coffee-App</Text>
-      <TouchableOpacity onPress={() => navigateToScreen("/signup")}>
+      <TouchableOpacity onPress={() => navigateToScreen("/profile")}>
         <Text style={styles.logStatue}>signup</Text>
       </TouchableOpacity>
     </View>
