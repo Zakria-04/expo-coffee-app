@@ -1,14 +1,17 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/assets/themes/colors";
+import { navigateToScreen } from "@/assets/res/utils";
 
 const Header = () => {
   return (
     <View style={styles.container}>
       <Ionicons name="menu-outline" size={60} color={COLORS.orange} />
       <Text style={styles.logo}>Coffee-App</Text>
-      <Text style={styles.logStatue}>signup</Text>
+      <TouchableOpacity onPress={() => navigateToScreen("/signup")}>
+        <Text style={styles.logStatue}>signup</Text>
+      </TouchableOpacity>
     </View>
   );
 };
