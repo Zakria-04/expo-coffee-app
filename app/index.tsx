@@ -15,6 +15,7 @@ const index = () => {
   setTimeout(() => {
     router.replace("/home" as Href);
   }, 1 * 1000);
+  
   return (
     <View style={styles.container}>
       <Image source={Images.coffeeCup} alt="logo" />

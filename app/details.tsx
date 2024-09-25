@@ -32,6 +32,25 @@ const Details = () => {
 
   const [sizeBorderSelected, setSizeBorderSelected] = useState(0);
   const [totalPrice, setTotalPrice] = useState(prices[0].price);
+  const [selectedSize, setSelectedSize] = useState([]);
+
+  const addSelectedPriceAndSizeToCart = (data: any, selectedSize: any) => {
+    const inititalCart = {
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      image: data.image,
+      detailsImg: data.detailsImg,
+      favorite: data.favorite,
+      quantity: data.quantity,
+      ingredients: data.ingredients,
+      average_rating: data.average_rating,
+      prices: data.prices,
+      price: selectedSize.price,
+      size: selectedSize.size,
+    };
+    // setCart(inititalCart as any);
+  };
 
   return (
     <View style={styles.container}>
@@ -68,6 +87,8 @@ const Details = () => {
               onPress={() => {
                 setSizeBorderSelected(index);
                 setTotalPrice(val.price);
+                setSelectedSize(val);
+                // addSelectedPriceAndSizeToCart(getData, val);
               }}
             >
               <View
@@ -90,7 +111,14 @@ const Details = () => {
             </TouchableOpacity>
           ))}
         </View>
-        <DetailsFooter totalPrice={totalPrice} coffeeID={id} />
+        <DetailsFooter
+          totalPrice={totalPrice}
+          coffeeID={id}
+          data={getData}
+          price={totalPrice}
+          selectedSize={selectedSize}
+          // cart={cart}
+        />
       </ScrollView>
     </View>
   );

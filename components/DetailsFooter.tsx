@@ -6,11 +6,18 @@ import { useStore } from "@/store/store";
 interface DetailsFooterProps {
   totalPrice: number;
   coffeeID: number;
+  data: any;
+  price: number;
+  cart?: any;
+  selectedSize: any;
 }
 
 const DetailsFooter: React.FC<DetailsFooterProps> = (props) => {
-  const { coffeeList } = useStore();
-  const { addToFavorite } = useStore();
+  const { coffeeList, addToCart } = useStore();
+  const { cartList } = useStore();
+
+  let addQuantityToSelectedSize = {...props.data};
+
   return (
     <View style={styles.container}>
       <Text style={styles.totalPrice}>
@@ -19,7 +26,7 @@ const DetailsFooter: React.FC<DetailsFooterProps> = (props) => {
       </Text>
       <TouchableOpacity
         onPress={() => {
-          addToFavorite(props.coffeeID);
+          addToCart(props.data, props.selectedSize);
         }}
       >
         <View style={styles.cartContainer}>

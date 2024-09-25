@@ -1,26 +1,26 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { COLORS } from "@/assets/themes/colors";
-import Header from "@/components/Header";
 import { useStore } from "@/store/store";
-import RenderFavorite from "@/components/RenderFavorite";
 import EmptyList from "@/components/EmptyList";
+import RenderCart from "@/components/RenderCart";
+import Header from "@/components/Header";
 
-const Favorite = () => {
-  const { favoriteList } = useStore();
+const Cart = () => {
+  const { cartList } = useStore();
 
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-          {favoriteList.length === 0 ? (
+          {cartList.length === 0 ? (
             <View style={styles.emptyListContainer}>
-              <EmptyList message="favorite" icon={"heart"} color={COLORS.red} />
+              <EmptyList message="cart" color={COLORS.brown} icon="cafe" />
             </View>
           ) : (
             <View>
               <Header />
-              <RenderFavorite data={favoriteList} coffeeID={1} />
+              <RenderCart />
             </View>
           )}
         </ScrollView>
@@ -29,7 +29,7 @@ const Favorite = () => {
   );
 };
 
-export default Favorite;
+export default Cart;
 
 const styles = StyleSheet.create({
   container: {

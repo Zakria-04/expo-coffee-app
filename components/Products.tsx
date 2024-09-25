@@ -52,7 +52,7 @@ const Products: React.FC<ProductsProps> = (props) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         data={filterDataByCategory}
         showsHorizontalScrollIndicator={false}
@@ -66,6 +66,9 @@ const Products: React.FC<ProductsProps> = (props) => {
 export default Products;
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+  },
   itemContainer: {
     borderWidth: 1,
     padding: 10,

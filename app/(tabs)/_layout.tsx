@@ -28,6 +28,20 @@ const _layout = () => {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="cart"
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="basket"
+              size={30}
+              color={focused ? COLORS.orange : COLORS.grey}
+            />
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="favorite"
         options={{

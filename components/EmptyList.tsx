@@ -4,13 +4,21 @@ import { Images } from "@/assets/images/images";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/assets/themes/colors";
 
-const EmptyList = () => {
+interface EmptyListProps {
+  message: string;
+  icon: any;
+  color: any;
+}
+
+const EmptyList: React.FC<EmptyListProps> = (props) => {
   return (
     <View style={styles.container}>
       <Image source={Images.emptyList} style={styles.emptyListImg} />
       <View style={styles.emptyListContainer}>
-        <Text style={styles.emptyListText}>Your favorite list is empty</Text>
-        <Ionicons name="heart" size={40} color={COLORS.red} />
+        <Text
+          style={styles.emptyListText}
+        >{`Your ${props.message} list is empty`}</Text>
+        <Ionicons name={props.icon} size={40} color={props.color} />
       </View>
     </View>
   );

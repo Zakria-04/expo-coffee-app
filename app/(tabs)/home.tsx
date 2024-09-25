@@ -10,6 +10,8 @@ import RenderProducts from "@/components/RenderProducts";
 const Home = () => {
   const CoffeeList = useStore((state) => state.coffeeList);
   const [data, setData] = useState(CoffeeList);
+  const { cartList } = useStore();
+  const getData = JSON.stringify(cartList);
 
   return (
     <View style={styles.container}>

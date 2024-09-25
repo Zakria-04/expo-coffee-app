@@ -13,7 +13,6 @@ interface DetailsHeaderProps {
 
 const DetailsHeader: React.FC<DetailsHeaderProps> = (props) => {
   const { addToFavorite, favoriteList } = useStore();
-  console.log("Facorite list", favoriteList);
 
   const checkIFCofeeIDInFavoriteList = favoriteList.some(
     (id) => id.id === props.coffeeID
