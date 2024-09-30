@@ -1,4 +1,3 @@
-import { CoffeeData } from "@/assets/res/data";
 import { produce } from "immer";
 import { create } from "zustand";
 import Quantity from "./../components/Quantity";
@@ -23,7 +22,9 @@ type StoreData = {
   coffeeList: ListDataTypes[];
   favoriteList: ListDataTypes[];
   cartList: ListDataTypes[];
-  fetchStoreData: () => void;
+  imageURL: string;
+  loading: boolean;
+  fetchStoreData: (data: any) => void;
   addToFavorite: (id: number) => void;
   addToCart: (data: any, selectedSize: any) => void;
   increaseQuantity: (id: any, size: any) => void;
@@ -35,10 +36,16 @@ export const useStore = create<StoreData>((set) => ({
   coffeeList: [],
   favoriteList: [],
   cartList: [],
-  fetchStoreData: () => {
-    set({
-      coffeeList: CoffeeData,
-    });
+  imageURL: "",
+  loading: false,
+  fetchStoreData: (data) => {
+    set(
+      produce((state) => {
+        const store_data = JSON.parse(data);
+        state.coffeeList = store_data.products;
+        state.imageURL = store_data.baseURL;
+      })
+    );
   },
   addToFavorite: (id: number) => {
     set(

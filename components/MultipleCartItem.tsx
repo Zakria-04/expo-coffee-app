@@ -10,7 +10,9 @@ interface MultipleCartItemProps {
 }
 
 const MultipleCartItem: React.FC<MultipleCartItemProps> = (props) => {
+  const { imageURL } = useStore();
   const { name, ingredients, image, size, price, prices } = props.item;
+  
 
   const [cartItemsTotal, setCartItemsTotal] = useState<number>(0);
   const [totalPrice, setTotalPrice] = useState(
@@ -28,7 +30,7 @@ const MultipleCartItem: React.FC<MultipleCartItemProps> = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.itemDetails}>
-        <Image style={styles.itemImg} source={image} />
+        <Image style={styles.itemImg} source={{ uri: imageURL + image }} />
         <View style={styles.detailsContainer}>
           <Text style={styles.itemName}>{name}</Text>
           <Text style={styles.itemIngredients}>with {ingredients}</Text>

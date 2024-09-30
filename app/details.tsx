@@ -14,15 +14,17 @@ import { COLORS } from "@/assets/themes/colors";
 import DetailsFooter from "@/components/DetailsFooter";
 import DetailsHeader from "@/components/DetailsHeader";
 import { Ionicons } from "@expo/vector-icons";
+import { useStore } from "@/store/store";
 
 const Details = () => {
   const { data } = useLocalSearchParams();
   const getData = JSON.parse(data as string);
+
   const {
     id,
     name,
     description,
-    detailsImg,
+    detailsImage,
     prices,
     favorite,
     quantity,
@@ -33,6 +35,7 @@ const Details = () => {
   const [sizeBorderSelected, setSizeBorderSelected] = useState(0);
   const [totalPrice, setTotalPrice] = useState(prices[0].price);
   const [selectedSize, setSelectedSize] = useState([]);
+  const { imageURL } = useStore();
 
   const addSelectedPriceAndSizeToCart = (data: any, selectedSize: any) => {
     const inititalCart = {
@@ -40,7 +43,7 @@ const Details = () => {
       name: data.name,
       description: data.description,
       image: data.image,
-      detailsImg: data.detailsImg,
+      detailsImage: data.detailsImg,
       favorite: data.favorite,
       quantity: data.quantity,
       ingredients: data.ingredients,
@@ -52,11 +55,12 @@ const Details = () => {
     // setCart(inititalCart as any);
   };
 
+
   return (
     <View style={styles.container}>
       <ScrollView>
         <ImageBackground
-          source={detailsImg}
+          source={{ uri: imageURL + detailsImage }}
           style={styles.detailsImage}
           imageStyle={styles.detailsImageStyle}
         >

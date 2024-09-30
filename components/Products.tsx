@@ -12,6 +12,7 @@ import React from "react";
 import { COLORS } from "@/assets/themes/colors";
 import { router } from "expo-router";
 import { navigateToScreen } from "@/assets/res/utils";
+import { useStore } from "@/store/store";
 
 interface ProductData {
   id: number;
@@ -31,11 +32,14 @@ interface ProductsProps {
 }
 
 const Products: React.FC<ProductsProps> = (props) => {
+  const { imageURL } = useStore();
   const filterDataByCategory = props.data.filter(
     (item) => item.category === props.category
   );
 
   const renderData: ListRenderItem<ProductData> = ({ item }) => {
+    const img = imageURL + item.image;
+
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity
@@ -43,7 +47,13 @@ const Products: React.FC<ProductsProps> = (props) => {
             navigateToScreen("/details", item);
           }}
         >
-          <Image source={item.image} style={styles.itemImage} />
+          <Image
+            source={{ uri: imageURL + item.image }}
+            style={styles.itemImage}
+            onError={() => {
+              console.error("image error");
+            }}
+          />
           <Text style={styles.itemName}>{item.name}</Text>
           <Text style={styles.itemPrice}>{item.prices[0].price} $</Text>
         </TouchableOpacity>

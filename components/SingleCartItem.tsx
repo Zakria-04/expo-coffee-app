@@ -9,7 +9,7 @@ interface SingleCartItemProps {
 }
 
 const SingleCartItem: React.FC<SingleCartItemProps> = (props) => {
-  const { cartList } = useStore();
+  const { cartList, imageURL } = useStore();
   const { name, ingredients, image, size, price, prices } = props.item;
 
   console.log(props.item);
@@ -19,7 +19,7 @@ const SingleCartItem: React.FC<SingleCartItemProps> = (props) => {
   );
   return (
     <View style={styles.container}>
-      <Image style={styles.itemImg} source={image} />
+      <Image style={styles.itemImg} source={{uri: imageURL + image}} />
       <View style={styles.itemContainer}>
         <Text style={styles.itemName}>{name}</Text>
         <Text style={styles.itemIngredients}>with {ingredients}</Text>

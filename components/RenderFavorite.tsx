@@ -11,6 +11,7 @@ import {
 import React from "react";
 import DetailsHeader from "./DetailsHeader";
 import { navigateToScreen } from "@/assets/res/utils";
+import { useStore } from "@/store/store";
 
 interface RenderFavoriteProps {
   data: any;
@@ -18,6 +19,7 @@ interface RenderFavoriteProps {
 }
 
 const RenderFavorite: React.FC<RenderFavoriteProps> = (props) => {
+  const { imageURL } = useStore();
   const renderFavorite: ListRenderItem<any> = ({ item }) => {
     return (
       <TouchableOpacity
@@ -26,7 +28,7 @@ const RenderFavorite: React.FC<RenderFavoriteProps> = (props) => {
         }}
       >
         <ImageBackground
-          source={item.detailsImg}
+          source={{ uri: imageURL + item.image }}
           imageStyle={styles.detailsImg}
           style={styles.detailsImg}
         >
