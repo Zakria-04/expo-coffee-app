@@ -1,7 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { COLORS } from "@/assets/themes/colors";
 import { useStore } from "@/store/store";
+import { updateUser } from "@/assets/res/api";
 
 interface DetailsFooterProps {
   totalPrice: number;
@@ -13,10 +14,19 @@ interface DetailsFooterProps {
 }
 
 const DetailsFooter: React.FC<DetailsFooterProps> = (props) => {
-  const { coffeeList, addToCart } = useStore();
-  const { cartList } = useStore();
+  const { coffeeList, addToCart, user, userCart } = useStore();
 
-  let addQuantityToSelectedSize = {...props.data};
+  // useEffect(() => {
+  //   if (user && userCart.length > 0) {
+  //     const x = {
+  //       userID: user._id,
+  //       updatedData: { userCart: userCart },
+  //     };
+  //     updateUser(x)
+  //       .then((response) => console.log("res server", response))
+  //       .catch((err) => console.log(err));
+  //   }
+  // }, [userCart]);
 
   return (
     <View style={styles.container}>
@@ -27,6 +37,10 @@ const DetailsFooter: React.FC<DetailsFooterProps> = (props) => {
       <TouchableOpacity
         onPress={() => {
           addToCart(props.data, props.selectedSize);
+          const x = {
+            userID: user._id,
+            updatedData: { userCart: userCart },
+          };
         }}
       >
         <View style={styles.cartContainer}>

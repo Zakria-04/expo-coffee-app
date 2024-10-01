@@ -7,13 +7,15 @@ import RenderCart from "@/components/RenderCart";
 import Header from "@/components/Header";
 
 const Cart = () => {
-  const { cartList } = useStore();
+  const { cartList, userCart, auth } = useStore();
+  const data = auth ? userCart : cartList;
+  console.log("data is", userCart);
 
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-          {cartList.length === 0 ? (
+          {data.length === 0 ? (
             <View style={styles.emptyListContainer}>
               <EmptyList message="cart" color={COLORS.brown} icon="cafe" />
             </View>

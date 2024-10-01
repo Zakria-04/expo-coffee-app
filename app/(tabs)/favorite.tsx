@@ -7,20 +7,20 @@ import RenderFavorite from "@/components/RenderFavorite";
 import EmptyList from "@/components/EmptyList";
 
 const Favorite = () => {
-  const { favoriteList } = useStore();
-
+  const { favoriteList, userFavorite, auth } = useStore();
+  const data = auth ? userFavorite : favoriteList;
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-          {favoriteList.length === 0 ? (
+          {data.length === 0 ? (
             <View style={styles.emptyListContainer}>
               <EmptyList message="favorite" icon={"heart"} color={COLORS.red} />
             </View>
           ) : (
             <View>
               <Header />
-              <RenderFavorite data={favoriteList} coffeeID={1} />
+              <RenderFavorite data={data} coffeeID={1} />
             </View>
           )}
         </ScrollView>

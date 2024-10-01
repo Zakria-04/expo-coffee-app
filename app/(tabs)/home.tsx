@@ -19,6 +19,10 @@ import axios from "axios";
 const Home = () => {
   const CoffeeList = useStore((state) => state.coffeeList);
   const [data, setData] = useState(CoffeeList);
+  const { user, userCart } = useStore();
+  const updadeUser = { userID: user._id, updateData: {userCart: []} };
+  console.log(updadeUser);
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -39,10 +43,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.darkBlue,
-  },
-  image: {
-    width: 300,
-    height: 300, // Adjust the height to maintain aspect ratio
-    resizeMode: "contain", // Change to 'cover' or 'stretch' as needed
   },
 });

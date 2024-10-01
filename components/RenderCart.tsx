@@ -7,10 +7,11 @@ import SingleCartItem from "./SingleCartItem";
 import MultipleCartItem from "./MultipleCartItem";
 
 const RenderCart = () => {
-  const { cartList } = useStore();
+  const { cartList, userCart, auth } = useStore();
+  const data = auth ? userCart : cartList;
 
   const cartListData = () => {
-    const renderData = cartList.map((item, index) => {
+    const renderData = data.map((item: any, index: any) => {
       const slectedSize = item.prices.filter((val: any) => val.quantity > 0);
 
       if (slectedSize.length > 1) {

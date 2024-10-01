@@ -1,17 +1,47 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { COLORS } from "@/assets/themes/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { goBackOneStep, navigateToScreen } from "@/assets/res/utils";
 import SubmitForm from "@/components/SubmitForm";
+import { signinUser } from "@/assets/res/api";
+import { useStore } from "@/store/store";
 
 const Signin = () => {
+  const { logUser } = useStore();
+  const [loading, setLoading] = useState(false);
+  console.log("loading statue", loading);
+
+  const signinUserFromAPI = async (form: any) => {
+    try {
+      setLoading(true);
+      const response = await signinUser(form);
+      if (response) {
+        setLoading(false);
+        logUser(response);
+        navigateToScreen("/home");
+      }
+    } catch (err) {
+      console.error("Error logging in:", err);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} color={COLORS.orange} />
+        <Text>loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -25,7 +55,7 @@ const Signin = () => {
             height: "100%",
           }}
         >
-          <Text style={styles.logTextMessage}>Create New</Text>
+          <Text style={styles.logTextMessage}>Login</Text>
           <Text
             style={[
               styles.logTextMessage,
@@ -34,7 +64,7 @@ const Signin = () => {
           >
             Account
           </Text>
-          <SubmitForm logStatus="signin" />
+          <SubmitForm logStatus="signin" onSubmit={signinUserFromAPI} />
           <View style={styles.goToLogin}>
             <Text style={styles.goToLoginText}>not a member yet?</Text>
             <TouchableOpacity onPress={() => navigateToScreen("/signup")}>

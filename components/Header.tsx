@@ -3,14 +3,18 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/assets/themes/colors";
 import { navigateToScreen } from "@/assets/res/utils";
+import { useStore } from "@/store/store";
 
 const Header = () => {
+  const { auth } = useStore();
   return (
     <View style={styles.container}>
       <Ionicons name="menu-outline" size={60} color={COLORS.orange} />
       <Text style={styles.logo}>Coffee-App</Text>
-      <TouchableOpacity onPress={() => navigateToScreen("/signup")}>
-        <Text style={styles.logStatue}>signup</Text>
+      <TouchableOpacity
+        onPress={() => navigateToScreen(auth ? "/profile" : "/signin")}
+      >
+        <Text style={styles.logStatue}>{auth ? "profile" : "signin"}</Text>
       </TouchableOpacity>
     </View>
   );

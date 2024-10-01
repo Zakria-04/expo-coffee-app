@@ -11,8 +11,10 @@ import { COLORS } from "@/assets/themes/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { goBackOneStep } from "@/assets/res/utils";
 import UserInfoModal from "@/components/Modals/UserInfoModal";
+import { useStore } from "@/store/store";
 
 const Profile = () => {
+  const { auth, user, logoutUser, deleteAccount } = useStore();
   const [userInfoModal, setUserInfoModal] = useState(false);
 
   return (
@@ -27,7 +29,7 @@ const Profile = () => {
               style={styles.backBtn}
             />
           </TouchableOpacity>
-          <Text style={styles.profileText}>zakria</Text>
+          <Text style={styles.profileText}>{user.userName}</Text>
           <Ionicons name="person-circle-sharp" size={50} color={COLORS.white} />
         </View>
         <View style={styles.profileDetailsContainer}>
@@ -44,13 +46,24 @@ const Profile = () => {
           <Ionicons name="person" size={20} color={COLORS.orange} />
         </View>
         <View style={styles.profileDetailsContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              deleteAccount(user._id);
+              logoutUser();
+              goBackOneStep();
+            }}
+          >
             <Text style={styles.profileDetailsText}>delete my account</Text>
           </TouchableOpacity>
           <Ionicons name="trash" size={20} color={COLORS.orange} />
         </View>
         <View style={styles.profileDetailsContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              goBackOneStep();
+              logoutUser();
+            }}
+          >
             <Text style={styles.profileDetailsText}>logout</Text>
           </TouchableOpacity>
           <Ionicons name="log-out" size={20} color={COLORS.orange} />

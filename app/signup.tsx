@@ -10,8 +10,41 @@ import SubmitForm from "@/components/SubmitForm";
 import { COLORS } from "@/assets/themes/colors";
 import { goBackOneStep, navigateToScreen } from "@/assets/res/utils";
 import { Ionicons } from "@expo/vector-icons";
+import { registerUser, signinUser } from "@/assets/res/api";
+import { useStore } from "@/store/store";
 
 const Signup = () => {
+  const { user, logUser } = useStore();
+  console.log("s", user);
+
+  const createNewUserFromAPI = async (form: any) => {
+    try {
+      const response = await registerUser(form);
+      if (response) {
+        console.log("user has been created");
+        try {
+          const logUserin = await signinUser(form);
+          if (logUserin) {
+            logUser(logUserin);
+            navigateToScreen("/home");
+          }
+        } catch (err) {
+          console.error("err with loggin in", err);
+        }
+        // signinUser(form)
+        //   .then((signinResponse) => {
+        //     console.log("user created and sing in ", signinResponse);
+        //     navigateToScreen("/home");
+        //   })
+        //   .catch((err) => {
+        //     console.error("user not signed in ", err);
+        //   });
+      }
+    } catch (err) {
+      console.error("error with creating user", err);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -34,7 +67,7 @@ const Signup = () => {
           >
             Account
           </Text>
-          <SubmitForm logStatus="signup" />
+          <SubmitForm logStatus="signup" onSubmit={createNewUserFromAPI} />
           <View style={styles.goToLogin}>
             <Text style={styles.goToLoginText}>already have an account?</Text>
             <TouchableOpacity onPress={() => navigateToScreen("/signin")}>

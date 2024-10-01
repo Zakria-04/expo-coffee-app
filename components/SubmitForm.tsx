@@ -5,16 +5,35 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { COLORS } from "@/assets/themes/colors";
 import { Ionicons } from "@expo/vector-icons";
 
 interface SubmitFormProps {
   logStatus: string;
+  onSubmit: (form: {
+    userName: string;
+    email?: string;
+    userPass: string;
+  }) => void;
 }
 
 const SubmitForm: React.FC<SubmitFormProps> = (props) => {
-  const { logStatus } = props;
+  const { logStatus, onSubmit } = props;
+  const [form, setForm] = useState({
+    userName: "",
+    userPass: "",
+    email: "",
+  });
+
+  console.log(form);
+
+  const handleFormTextChange = (key: string, value: any) => {
+    setForm({
+      ...form,
+      [key]: value,
+    });
+  };
 
   const addRequiredText = () => {
     return (
@@ -31,22 +50,36 @@ const SubmitForm: React.FC<SubmitFormProps> = (props) => {
           {logStatus === "signup" ? "userName" : "UserName or Email"}
           {addRequiredText()}
         </Text>
-        <TextInput style={styles.userInput} />
+        <TextInput
+          style={styles.userInput}
+          onChangeText={(value: any) => handleFormTextChange("userName", value)}
+        />
         {logStatus === "signup" && (
           <View>
             <Text style={styles.userInputText}>
               email
               {addRequiredText()}
             </Text>
-            <TextInput style={styles.userInput} />
+            <TextInput
+              style={styles.userInput}
+              onChangeText={(value) => handleFormTextChange("email", value)}
+            />
           </View>
         )}
         <Text style={styles.userInputText}>
           Password
           {addRequiredText()}
         </Text>
-        <TextInput style={styles.userInput} secureTextEntry />
-        <TouchableOpacity>
+        <TextInput
+          style={styles.userInput}
+          secureTextEntry
+          onChangeText={(value) => handleFormTextChange("userPass", value)}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            onSubmit(form);
+          }}
+        >
           <View style={styles.logBtn}>
             <Text style={styles.logBtnText}>
               {logStatus === "signup" ? "sign me up!" : "login"}
