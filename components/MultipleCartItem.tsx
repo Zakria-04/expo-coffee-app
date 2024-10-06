@@ -12,19 +12,28 @@ interface MultipleCartItemProps {
 const MultipleCartItem: React.FC<MultipleCartItemProps> = (props) => {
   const { imageURL } = useStore();
   const { name, ingredients, image, size, price, prices } = props.item;
-  
 
   const [cartItemsTotal, setCartItemsTotal] = useState<number>(0);
+
+  // const [totalPrice, setTotalPrice] = useState(
+  //   prices.map((price: any) => price.price)
+  // );
+
   const [totalPrice, setTotalPrice] = useState(
-    prices.map((price: any) => price.price)
+    prices.reduce((sum: number, price: any) => sum + price.price, 0)
   );
 
+  // console.log("Total price:", totalPrice.toFixed(2));
+
   useEffect(() => {
-    const newTotalPrice = prices.reduce((acc: number, val: any) => {
+    let newTotalPrice = prices.reduce((acc: number, val: any) => {
       return acc + val.price * val.quantity;
     }, 0);
 
+    // console.log("calc",calc);
+
     setCartItemsTotal(newTotalPrice);
+    // console.log("new total", newTotalPrice);
   }, [prices]);
 
   return (
@@ -46,7 +55,7 @@ const MultipleCartItem: React.FC<MultipleCartItemProps> = (props) => {
               <View style={styles.selectedSizeContainer}>
                 <Text style={styles.selectedSize}>{val.size}</Text>
               </View>
-              <Text style={styles.selectedPrice}>$ {newTotal}</Text>
+              <Text style={styles.selectedPrice}>$ {newTotal.toFixed(2)}</Text>
               <View style={{ width: 170 }}>
                 <Quantity
                   quantity={val.quantity}
@@ -64,7 +73,7 @@ const MultipleCartItem: React.FC<MultipleCartItemProps> = (props) => {
       })}
       <View style={styles.totalPriceContainer}>
         <Text style={styles.totalPriceTxt}>
-          total price: $ {cartItemsTotal}
+          total price: $ {cartItemsTotal.toFixed(2)}
         </Text>
       </View>
     </View>

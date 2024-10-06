@@ -4,6 +4,7 @@ import Quantity from "./../components/Quantity";
 import { deleteAccount, updateUser } from "@/assets/res/api";
 
 type ListDataTypes = {
+  date: any;
   id: number;
   category: string;
   name: string;
@@ -23,6 +24,9 @@ type StoreData = {
   coffeeList: ListDataTypes[];
   favoriteList: ListDataTypes[];
   cartList: ListDataTypes[];
+  orderHistory: ListDataTypes[];
+  userOrderHistory: ListDataTypes[];
+  cartTotal: number;
   imageURL: string;
   user: any;
   auth: boolean;
@@ -35,15 +39,20 @@ type StoreData = {
   increaseQuantity: (id: any, size: any) => void;
   decreaseQuantity: (id: any, size: any) => void;
   removeItemFromCart: (id: number, quantity: number) => void;
+  calculateTotalCart: () => void;
   logUser: (data: any) => void;
   logoutUser: () => void;
   deleteAccount: (id: string) => void;
+  placeOrder: (currentUser: any) => void;
 };
 
 export const useStore = create<StoreData>((set) => ({
   coffeeList: [],
   favoriteList: [],
   cartList: [],
+  orderHistory: [],
+  userOrderHistory: [],
+  cartTotal: 0,
   imageURL: "",
   user: [],
   auth: false,
@@ -165,13 +174,6 @@ export const useStore = create<StoreData>((set) => ({
             };
             state.cartList.unshift(updatedData);
           }
-          // const x = {
-          //   userID: state.user._id,
-          //   updatedData: { userCart: [{ category: "lattee" }] },
-          // };
-          // if (state.auth) {
-          //   updateUser(x);
-          // }
         }
       })
     );
@@ -299,6 +301,26 @@ export const useStore = create<StoreData>((set) => ({
       })
     );
   },
+  calculateTotalCart: () => {
+    set(
+      produce((state) => {
+        let total = 0;
+
+        const cartItems = state.auth ? state.userCart : state.cartList;
+
+        if (cartItems.length > 0) {
+          cartItems.forEach((item: any) => {
+            item.prices.forEach((price: any) => {
+              total += price.price * price.quantity; // Calculate total price per size
+            });
+          });
+        }
+
+        state.cartTotal = total;
+        // console.log("Total cart price:", total);
+      })
+    );
+  },
   logUser: (data) => {
     set(
       produce((state) => {
@@ -336,6 +358,33 @@ export const useStore = create<StoreData>((set) => ({
             .catch((err) => {
               console.error("error with delete account", err);
             });
+        }
+      })
+    );
+  },
+  placeOrder: (currentUser) => {
+    set(
+      produce((state) => {
+        if (state.auth) {
+          const date = new Date();
+          const y = state.userOrderHistory;
+          const x = {
+            date: date,
+            orderItem: state.userCart,
+          };
+          y.unshift(x);
+          state.userOrderHistory = y;
+          state.userCart = [];
+        } else {
+          const date = new Date();
+          const y = state.orderHistory;
+          const x = {
+            date: date,
+            orderItem: state.cartList,
+          };
+          y.unshift(x);
+          state.orderHistory = y;
+          state.cartList = [];
         }
       })
     );

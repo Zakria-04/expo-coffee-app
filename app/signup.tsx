@@ -1,11 +1,12 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import SubmitForm from "@/components/SubmitForm";
 import { COLORS } from "@/assets/themes/colors";
 import { goBackOneStep, navigateToScreen } from "@/assets/res/utils";
@@ -15,35 +16,38 @@ import { useStore } from "@/store/store";
 
 const Signup = () => {
   const { user, logUser } = useStore();
-  console.log("s", user);
+  const [loading, setLoading] = useState(false);
 
   const createNewUserFromAPI = async (form: any) => {
     try {
+      setLoading(true);
       const response = await registerUser(form);
       if (response) {
         console.log("user has been created");
         try {
           const logUserin = await signinUser(form);
           if (logUserin) {
+            setLoading(false);
             logUser(logUserin);
             navigateToScreen("/home");
           }
         } catch (err) {
           console.error("err with loggin in", err);
         }
-        // signinUser(form)
-        //   .then((signinResponse) => {
-        //     console.log("user created and sing in ", signinResponse);
-        //     navigateToScreen("/home");
-        //   })
-        //   .catch((err) => {
-        //     console.error("user not signed in ", err);
-        //   });
       }
     } catch (err) {
       console.error("error with creating user", err);
     }
   };
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} color={COLORS.orange} />
+        <Text>loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

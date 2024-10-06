@@ -14,14 +14,12 @@ import SearchItem from "@/components/SearchItem";
 import Category from "@/components/Category";
 import { useStore } from "@/store/store";
 import RenderProducts from "@/components/RenderProducts";
-import axios from "axios";
 
 const Home = () => {
   const CoffeeList = useStore((state) => state.coffeeList);
   const [data, setData] = useState(CoffeeList);
-  const { user, userCart } = useStore();
-  const updadeUser = { userID: user._id, updateData: {userCart: []} };
-  console.log(updadeUser);
+  const { user, userCart, cartList } = useStore();
+  
 
   return (
     <View style={styles.container}>

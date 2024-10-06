@@ -34,7 +34,7 @@ const _layout = () => {
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons
-              name="basket"
+              name="bag"
               size={30}
               color={focused ? COLORS.orange : COLORS.grey}
             />
@@ -48,6 +48,19 @@ const _layout = () => {
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name="heart"
+              size={30}
+              color={focused ? COLORS.orange : COLORS.grey}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="orderHistory"
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="notifications"
               size={30}
               color={focused ? COLORS.orange : COLORS.grey}
             />

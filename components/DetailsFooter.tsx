@@ -16,18 +16,6 @@ interface DetailsFooterProps {
 const DetailsFooter: React.FC<DetailsFooterProps> = (props) => {
   const { coffeeList, addToCart, user, userCart } = useStore();
 
-  // useEffect(() => {
-  //   if (user && userCart.length > 0) {
-  //     const x = {
-  //       userID: user._id,
-  //       updatedData: { userCart: userCart },
-  //     };
-  //     updateUser(x)
-  //       .then((response) => console.log("res server", response))
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [userCart]);
-
   return (
     <View style={styles.container}>
       <Text style={styles.totalPrice}>

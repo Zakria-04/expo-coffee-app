@@ -12,14 +12,15 @@ const SingleCartItem: React.FC<SingleCartItemProps> = (props) => {
   const { cartList, imageURL } = useStore();
   const { name, ingredients, image, size, price, prices } = props.item;
 
-  console.log(props.item);
-
   const [totalPrice, setTotalPrice] = useState(
-    prices.map((price: any) => price.price)
+    prices.reduce((sum: number, price: any) => sum + price.price, 0)
   );
+
+  // console.log("Total price:", totalPrice.toFixed(2));
+
   return (
     <View style={styles.container}>
-      <Image style={styles.itemImg} source={{uri: imageURL + image}} />
+      <Image style={styles.itemImg} source={{ uri: imageURL + image }} />
       <View style={styles.itemContainer}>
         <Text style={styles.itemName}>{name}</Text>
         <Text style={styles.itemIngredients}>with {ingredients}</Text>
@@ -32,7 +33,9 @@ const SingleCartItem: React.FC<SingleCartItemProps> = (props) => {
                   <View style={styles.selectedSizeContainer}>
                     <Text style={styles.selectedSize}>{val.size}</Text>
                   </View>
-                  <Text style={styles.selectedPrice}>$ {totalPrice}</Text>
+                  <Text style={styles.selectedPrice}>
+                    $ {totalPrice.toFixed(2)}
+                  </Text>
                 </View>
                 <View style={{ marginTop: 20 }}>
                   <Quantity

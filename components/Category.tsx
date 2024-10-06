@@ -38,7 +38,7 @@ const Category: React.FC<CategoryProps> = (props) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView horizontal>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {category.map((cate, index) => (
           <View key={index}>
             <TouchableOpacity

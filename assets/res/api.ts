@@ -17,7 +17,7 @@ export const signinUser = (form: any) => {
 };
 
 export const updateUser = (form: any) => {
-  console.log("form is ", form);
+  // console.log("form is ", form);
   const route = "/updateUser";
   return appFetch(route, "POST", form);
 };

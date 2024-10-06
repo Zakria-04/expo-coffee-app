@@ -26,6 +26,7 @@ const RenderProducts: React.FC<RenderProductsProps> = (props) => {
       <Products category="cappuccino" data={props.data} />
       <Products category="espresso" data={props.data} />
       <Products category="latte" data={props.data} />
+      <Products category="macchiato" data={props.data} />
     </View>
   );
 };

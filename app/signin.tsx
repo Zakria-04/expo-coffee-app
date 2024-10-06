@@ -17,7 +17,6 @@ import { useStore } from "@/store/store";
 const Signin = () => {
   const { logUser } = useStore();
   const [loading, setLoading] = useState(false);
-  console.log("loading statue", loading);
 
   const signinUserFromAPI = async (form: any) => {
     try {
@@ -45,7 +44,10 @@ const Signin = () => {
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        <TouchableOpacity onPress={goBackOneStep} style={styles.backBtn}>
+        <TouchableOpacity
+          onPress={() => navigateToScreen("/home")}
+          style={styles.backBtn}
+        >
           <Ionicons name="caret-back-outline" size={50} color={COLORS.white} />
         </TouchableOpacity>
         <View
