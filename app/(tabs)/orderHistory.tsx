@@ -10,60 +10,36 @@ import React from "react";
 import { COLORS } from "@/assets/themes/colors";
 import { useStore } from "@/store/store";
 import Header from "@/components/Header";
+import EmptyList from "@/components/EmptyList";
+import RenderOrderHistory from "@/components/RenderOrderHistory";
 
 const OrderHistory = () => {
-  const { orderHistory, imageURL, userOrderHistory, auth } = useStore();
+  const { orderHistory, userOrderHistory, auth } = useStore();
 
   const data = auth ? userOrderHistory : orderHistory;
-
-  const renderOrderHistory = () => {
-    return data.map((item: any, index) => {
-      const day = item.date.getDate();
-      const month = item.date.getMonth() + 1;
-      const year = item.date.getFullYear();
-      const orderDate = `${day}/${month}/${year}`;
-
-      return (
-        <View key={index}>
-          <View style={styles.itemBorder}>
-            <Text style={[styles.itemDate, { fontSize: 20 }]}>order date:</Text>
-            <Text style={styles.itemDate}>{orderDate}</Text>
-            {item.orderItem.map((val: any) => (
-              <View key={val.id}>
-                <View style={styles.itemContainer}>
-                  <Image
-                    source={{ uri: imageURL + val.image }}
-                    style={styles.itemImage}
-                  />
-                  <View style={styles.valContainer}>
-                    <Text style={styles.itemname}>{val.name}</Text>
-                    <Text style={styles.itemingredients}>
-                      {val.ingredients}
-                    </Text>
-                  </View>
-                </View>
-                {val.prices.map((price: any) => (
-                  <View style={styles.priceContainer}>
-                    <Text style={styles.itemPirce}>{price.price}$</Text>
-                    <Text style={styles.itemPirce}>x{price.quantity}</Text>
-                  </View>
-                ))}
-              </View>
-            ))}
-          </View>
-        </View>
-      );
-    });
-  };
 
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-          <View style={{ marginBottom: 30 }}>
-            <Header />
-          </View>
-          <View style={{ marginBottom: 50 }}>{renderOrderHistory()}</View>
+          {data.length === 0 ? (
+            <View style={styles.emptyListContainer}>
+              <EmptyList
+                icon={"sad"}
+                message="order history"
+                color={COLORS.orange}
+              />
+            </View>
+          ) : (
+            <View>
+              <View style={{ marginBottom: 30 }}>
+                <Header screen="Order-History" />
+              </View>
+              <View style={{ marginBottom: 50 }}>
+                <RenderOrderHistory />
+              </View>
+            </View>
+          )}
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -77,6 +53,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.darkBlue,
     padding: 15,
+  },
+  emptyListContainer: {
+    alignItems: "center",
+    marginTop: "80%",
   },
   itemBorder: {
     borderWidth: 1,

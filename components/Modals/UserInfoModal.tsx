@@ -6,8 +6,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { COLORS } from "@/assets/themes/colors";
+import { Ionicons } from "@expo/vector-icons";
+import { useStore } from "@/store/store";
+import bcrypt from "bcryptjs";
 
 interface UserInfoModalProps {
   modal: boolean;
@@ -15,14 +18,36 @@ interface UserInfoModalProps {
 }
 
 const UserInfoModal: React.FC<UserInfoModalProps> = (props) => {
+  const { user } = useStore();
   const { setModal, modal } = props;
+  const [userPass, setUserPass] = useState("");
+
+  const checkUserPass = async () => {
+      const isValid = await bcrypt.compare(user.userPass, "123")
+      console.log(isValid);
+
+  };
+
   return (
     <Modal visible={modal} transparent>
+      <View style={{ position: "absolute", top: 50, right: 10, zIndex: 1 }}>
+        <TouchableOpacity
+          onPress={() => {
+            setModal(false);
+          }}
+        >
+          <Ionicons name="close" size={50} color={COLORS.orange} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.container}>
         <View style={styles.boxContainer}>
           <Text style={styles.checkPasswordText}>Enter your password</Text>
-          <TextInput style={styles.checkPasswordInput} secureTextEntry />
-          <TouchableOpacity>
+          <TextInput
+            style={styles.checkPasswordInput}
+            secureTextEntry
+            onChangeText={(val) => setUserPass(val)}
+          />
+          <TouchableOpacity onPress={checkUserPass}>
             <View style={styles.sendBtnContainer}>
               <Text style={styles.sendBtnText}>send</Text>
             </View>

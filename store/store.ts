@@ -43,7 +43,7 @@ type StoreData = {
   logUser: (data: any) => void;
   logoutUser: () => void;
   deleteAccount: (id: string) => void;
-  placeOrder: (currentUser: any) => void;
+  placeOrder: () => void;
 };
 
 export const useStore = create<StoreData>((set) => ({
@@ -119,13 +119,13 @@ export const useStore = create<StoreData>((set) => ({
   addToCart: (data: any, selectedSize: any) => {
     set(
       produce((state) => {
-        if (state.auth) {
-          const existingItemIndex = state.userCart.findIndex(
+        const addItemToCart = (cartData: any) => {
+          const existingItemIndex = cartData.findIndex(
             (item: any) => item.id === data.id
           );
 
           if (existingItemIndex !== -1) {
-            const existingItem = state.userCart[existingItemIndex];
+            const existingItem = cartData[existingItemIndex];
             const priceIndex = existingItem.prices.findIndex(
               (price: any) => price.size === selectedSize.size
             );
@@ -139,41 +139,26 @@ export const useStore = create<StoreData>((set) => ({
               ...data,
               prices: [{ ...selectedSize, quantity: 1 }],
             };
-            state.userCart.unshift(updatedData);
+            cartData.unshift(updatedData);
           }
+        };
 
-          if (state.auth && state.user._id) {
-            const x = {
+        if (state.auth) {
+          addItemToCart(state.userCart);
+
+          if (state.user._id) {
+            const updatedUserData = {
               userID: state.user._id,
               updatedData: { userCart: state.userCart },
             };
-            updateUser(x)
+            updateUser(updatedUserData)
               .then((response) => console.log("res server", response))
               .catch((err) => console.log(err));
           }
+
           console.log("cart list is ", state.userCart);
         } else {
-          const existingItemIndex = state.cartList.findIndex(
-            (item: any) => item.id === data.id
-          );
-
-          if (existingItemIndex !== -1) {
-            const existingItem = state.cartList[existingItemIndex];
-            const priceIndex = existingItem.prices.findIndex(
-              (price: any) => price.size === selectedSize.size
-            );
-            if (priceIndex !== -1) {
-              existingItem.prices[priceIndex].quantity += 1;
-            } else {
-              existingItem.prices.unshift({ ...selectedSize, quantity: 1 });
-            }
-          } else {
-            const updatedData = {
-              ...data,
-              prices: [{ ...selectedSize, quantity: 1 }],
-            };
-            state.cartList.unshift(updatedData);
-          }
+          addItemToCart(state.cartList);
         }
       })
     );
@@ -181,10 +166,8 @@ export const useStore = create<StoreData>((set) => ({
   increaseQuantity: (id, size) => {
     set(
       produce((state) => {
-        if (state.auth) {
-          const findItemByID = state.userCart.find(
-            (item: any) => item.id === id
-          );
+        const updateQuantity = (cartData: any) => {
+          const findItemByID = cartData.find((item: any) => item.id === id);
           if (findItemByID) {
             const findSize = findItemByID.prices.find(
               (item: any) => item.size === size
@@ -193,28 +176,22 @@ export const useStore = create<StoreData>((set) => ({
               findSize.quantity += 1;
             }
           }
+        };
 
-          if (state.auth && state.user._id) {
-            const x = {
+        if (state.auth) {
+          updateQuantity(state.userCart);
+
+          if (state.user._id) {
+            const updatedUserData = {
               userID: state.user._id,
               updatedData: { userCart: state.userCart },
             };
-            updateUser(x)
+            updateUser(updatedUserData)
               .then((response) => console.log("res server", response))
               .catch((err) => console.log(err));
           }
         } else {
-          const findItemByID = state.cartList.find(
-            (item: any) => item.id === id
-          );
-          if (findItemByID) {
-            const findSize = findItemByID.prices.find(
-              (item: any) => item.size === size
-            );
-            if (findSize) {
-              findSize.quantity += 1;
-            }
-          }
+          updateQuantity(state.cartList);
         }
       })
     );
@@ -222,36 +199,32 @@ export const useStore = create<StoreData>((set) => ({
   decreaseQuantity: (id, size) => {
     set(
       produce((state) => {
-        if (state.auth) {
-          const findByID = state.userCart.find((item: any) => item.id === id);
+        const updateQuantity = (cartData: any) => {
+          const findByID = cartData.find((item: any) => item.id === id);
           if (findByID) {
             const findSize = findByID.prices.find(
               (item: any) => item.size === size
             );
-            if (findSize) {
+            if (findSize && findSize.quantity > 0) {
               findSize.quantity -= 1;
             }
           }
+        };
 
-          if (state.auth && state.user._id) {
-            const x = {
+        if (state.auth) {
+          updateQuantity(state.userCart);
+
+          if (state.user._id) {
+            const updatedUserData = {
               userID: state.user._id,
               updatedData: { userCart: state.userCart },
             };
-            updateUser(x)
+            updateUser(updatedUserData)
               .then((response) => console.log("res server", response))
               .catch((err) => console.log(err));
           }
         } else {
-          const findByID = state.cartList.find((item: any) => item.id === id);
-          if (findByID) {
-            const findSize = findByID.prices.find(
-              (item: any) => item.size === size
-            );
-            if (findSize) {
-              findSize.quantity -= 1;
-            }
-          }
+          updateQuantity(state.cartList);
         }
       })
     );
@@ -259,44 +232,35 @@ export const useStore = create<StoreData>((set) => ({
   removeItemFromCart: (id, size) => {
     set(
       produce((state) => {
-        if (state.auth) {
-          const findItemByID = state.userCart.find(
-            (item: any) => item.id === id
-          );
-          if (findItemByID) {
-            findItemByID.prices = findItemByID.prices.filter(
+        const removeItem = (cartData: any) => {
+          const itemIndex = cartData.findIndex((item: any) => item.id === id);
+          if (itemIndex !== -1) {
+            const item = cartData[itemIndex];
+
+            item.prices = item.prices.filter(
               (price: any) => price.size !== size
             );
-            if (findItemByID.prices.length === 0) {
-              state.userCart = state.userCart.filter(
-                (item: any) => item.id !== id
-              );
+
+            if (item.prices.length === 0) {
+              cartData.splice(itemIndex, 1);
             }
           }
+        };
 
-          if (state.auth && state.user._id) {
-            const x = {
+        if (state.auth) {
+          removeItem(state.userCart);
+
+          if (state.user._id) {
+            const updatedUserData = {
               userID: state.user._id,
               updatedData: { userCart: state.userCart },
             };
-            updateUser(x)
+            updateUser(updatedUserData)
               .then((response) => console.log("res server", response))
               .catch((err) => console.log(err));
           }
         } else {
-          const findItemByID = state.cartList.find(
-            (item: any) => item.id === id
-          );
-          if (findItemByID) {
-            findItemByID.prices = findItemByID.prices.filter(
-              (price: any) => price.size !== size
-            );
-            if (findItemByID.prices.length === 0) {
-              state.cartList = state.cartList.filter(
-                (item: any) => item.id !== id
-              );
-            }
-          }
+          removeItem(state.cartList);
         }
       })
     );
@@ -305,19 +269,15 @@ export const useStore = create<StoreData>((set) => ({
     set(
       produce((state) => {
         let total = 0;
-
         const cartItems = state.auth ? state.userCart : state.cartList;
-
         if (cartItems.length > 0) {
           cartItems.forEach((item: any) => {
             item.prices.forEach((price: any) => {
-              total += price.price * price.quantity; // Calculate total price per size
+              total += price.price * price.quantity;
             });
           });
         }
-
         state.cartTotal = total;
-        // console.log("Total cart price:", total);
       })
     );
   },
@@ -328,11 +288,9 @@ export const useStore = create<StoreData>((set) => ({
         state.user = data;
         state.userCart = data.userCart || [];
         state.userFavorite = data.userFavorite || [];
+        state.userOrderHistory = data.userOrderHistory || [];
       })
     );
-  },
-  registerNewUser: () => {
-    set(produce((state) => {}));
   },
   logoutUser: () => {
     set(
@@ -340,6 +298,7 @@ export const useStore = create<StoreData>((set) => ({
         state.userCart = [];
         state.userFavorite = [];
         state.user = [];
+        state.userOrderHistory = [];
         state.auth = false;
       })
     );
@@ -362,28 +321,38 @@ export const useStore = create<StoreData>((set) => ({
       })
     );
   },
-  placeOrder: (currentUser) => {
+  placeOrder: () => {
     set(
       produce((state) => {
-        if (state.auth) {
+        const addOrder = (orderList: any, cart: any, userID: any) => {
           const date = new Date();
-          const y = state.userOrderHistory;
-          const x = {
-            date: date,
-            orderItem: state.userCart,
+          const day = date.getDate();
+          const month = date.getMonth() + 1;
+          const year = date.getFullYear();
+          const orderDate = `${day}/${month}/${year}`;
+          const newData = {
+            date: orderDate,
+            ordersItem: cart,
           };
-          y.unshift(x);
-          state.userOrderHistory = y;
+          orderList.unshift(newData);
+
+          if (userID) {
+            const updatUserData = {
+              userID: userID,
+              updatedData: {
+                userCart: [],
+                userOrderHistory: orderList,
+              },
+            };
+            updateUser(updatUserData);
+          }
+        };
+
+        if (state.auth) {
+          addOrder(state.userOrderHistory, state.userCart, state.user._id);
           state.userCart = [];
         } else {
-          const date = new Date();
-          const y = state.orderHistory;
-          const x = {
-            date: date,
-            orderItem: state.cartList,
-          };
-          y.unshift(x);
-          state.orderHistory = y;
+          addOrder(state.orderHistory, state.cartList, null);
           state.cartList = [];
         }
       })

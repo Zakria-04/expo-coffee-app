@@ -22,7 +22,7 @@ const CartFooter: React.FC<CartFooterProps> = (props) => {
         <TouchableOpacity
           onPress={() => {
             console.log("pressed");
-            placeOrder(currentUser);
+            placeOrder();
           }}
         >
           <View style={styles.checkBtn}>

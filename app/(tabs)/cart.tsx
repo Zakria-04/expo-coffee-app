@@ -11,7 +11,7 @@ const Cart = () => {
   const { cartList, userCart, auth, calculateTotalCart, cartTotal } =
     useStore();
   const data = auth ? userCart : cartList;
-  // console.log("my cart total iss", cartTotal);
+  console.log("my cart total iss", cartList);
 
   useEffect(() => {
     calculateTotalCart();
@@ -27,7 +27,7 @@ const Cart = () => {
         ) : (
           <View style={styles.contentWrapper}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
-              <Header />
+              <Header screen="Cart" />
               <RenderCart />
             </ScrollView>
             <CartFooter cartTotal={cartTotal} />

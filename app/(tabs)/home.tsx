@@ -19,19 +19,18 @@ const Home = () => {
   const CoffeeList = useStore((state) => state.coffeeList);
   const [data, setData] = useState(CoffeeList);
   const { user, userCart, cartList } = useStore();
-  
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.darkBlue}}>
+      <View style={styles.container}>
         <ScrollView>
-          <Header />
+          <Header screen="Coffee-App" />
           <SearchItem setData={setData} coffeeList={CoffeeList} />
           <Category setData={setData} coffeeList={CoffeeList} />
           <RenderProducts data={data} />
         </ScrollView>
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
