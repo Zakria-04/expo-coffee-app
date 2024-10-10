@@ -28,6 +28,7 @@ const Signin = () => {
         navigateToScreen("/home");
       }
     } catch (err) {
+      setLoading(false);
       console.error("Error logging in:", err);
     }
   };

@@ -32,6 +32,7 @@ const Signup = () => {
             navigateToScreen("/home");
           }
         } catch (err) {
+          setLoading(false);
           console.error("err with loggin in", err);
         }
       }
