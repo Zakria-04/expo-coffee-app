@@ -8,23 +8,11 @@ import { getProducts } from "@/assets/res/api";
 import Loading from "@/components/Loading";
 
 const Index = () => {
-  const { fetchStoreData } = useStore();
-  const [isLoading, setIsLoading] = useState(true);
-
-
-  
-
+  const { fetchStoreData, isLoading, coffeeList } = useStore();
   useEffect(() => {
-    getProducts()
-      .then((response) => {
-        const stringify_data = JSON.stringify(response);
-        fetchStoreData(stringify_data);
-        if (response) {
-          setIsLoading(false);
-          router.replace("/home");
-        }
-      })
-      .catch((e) => console.log("error", e));
+    fetchStoreData().then(() => {
+      router.replace("/home");
+    });
   }, []);
 
   return <View style={styles.container}>{isLoading && <Loading />}</View>;

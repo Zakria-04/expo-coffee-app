@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware"; // Import the persist middleware
 import AsyncStorage from "@react-native-async-storage/async-storage"; // For AsyncStorage
 import Quantity from "./../components/Quantity";
-import { deleteAccount, updateUser } from "@/assets/res/api";
+import { deleteAccount, getProducts, updateUser } from "@/assets/res/api";
 
 type ListDataTypes = {
   date: any;
@@ -32,10 +32,11 @@ type StoreData = {
   imageURL: string;
   user: any;
   auth: boolean;
-  loading: boolean;
+  isLoading: boolean;
+  error: string | null;
   userCart: any;
   userFavorite: any;
-  fetchStoreData: (data: any) => void;
+  fetchStoreData: () => Promise<void>;
   addToFavorite: (id: number) => void;
   addToCart: (data: any, selectedSize: any) => void;
   increaseQuantity: (id: any, size: any) => void;
@@ -48,7 +49,6 @@ type StoreData = {
   placeOrder: () => void;
 };
 
-// Use the persist middleware to store data
 export const useStore = create<StoreData>()(
   persist(
     (set) => ({
@@ -61,66 +61,73 @@ export const useStore = create<StoreData>()(
       imageURL: "",
       user: [],
       auth: false,
-      loading: false,
+      isLoading: false,
+      error: null,
       userCart: [],
       userFavorite: [],
-      fetchStoreData: (data) => {
-        set(
-          produce((state) => {
-            const store_data = JSON.parse(data);
-            state.coffeeList = store_data.products;
-            state.imageURL = store_data.baseURL;
-          })
-        );
+      fetchStoreData: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await fetch(
+            "https://expo-coffee-app-server.onrender.com/products"
+          );
+          const result = await response.json();
+          set({
+            isLoading: false,
+            error: null,
+            coffeeList: result.products,
+            imageURL: result.baseURL,
+          });
+          console.log("data has been fetched");
+        } catch (err) {
+          set({ error: "Failed With Fetching Data", isLoading: false });
+          console.error("error message: ", err);
+        }
       },
       addToFavorite: (id: number) => {
         set(
           produce((state) => {
-            if (state.auth) {
+            const favoriteFunction = (coffeeData: any) => {
               const item = state.coffeeList.find(
                 (coffee: any) => coffee.id === id
               );
+
               if (item) {
                 item.favorite = !item.favorite;
+
                 if (item.favorite) {
-                  state.userFavorite.unshift(item);
+                  coffeeData.unshift(item);
+                  console.log("Added to favorites", state.favoriteList);
                 } else {
-                  state.userFavorite = state.userFavorite.filter(
+                  const filteredList = coffeeData.filter(
                     (favItem: any) => favItem.id !== id
                   );
+                  coffeeData.length = 0;
+                  coffeeData.push(...filteredList);
+                  console.log("Removed from favorites", state.favoriteList);
                 }
               }
+            };
 
+            if (state.auth) {
+              favoriteFunction(state.userFavorite);
               if (state.auth && state.user._id) {
-                const x = {
+                const updatedUserData = {
                   userID: state.user._id,
                   updatedData: {
                     userFavorite: state.userFavorite,
                   },
                 };
-                updateUser(x)
-                  .then((response) => {
-                    console.log("user favorite list updated", response);
+                updateUser(updatedUserData)
+                  .then(() => {
+                    console.log("user favorite list has been updated!");
                   })
                   .catch((err) => {
-                    console.error("err with updating user favorite list", err);
+                    console.error("error on updating user favorite list", err);
                   });
-                console.log("user favorite list is", state.userFavorite);
               }
             } else {
-              const item = state.coffeeList.find(
-                (coffee: any) => coffee.id === id
-              );
-              if (item) {
-                item.favorite = !item.favorite;
-                if (item.favorite) {
-                  state.favoriteList.unshift(item);
-                } else {
-                  state.favoriteList = state.favoriteList.filter(
-                    (favItem: any) => favItem.id !== id
-                  );
-                }
-              }
+              favoriteFunction(state.favoriteList);
             }
           })
         );
@@ -164,10 +171,9 @@ export const useStore = create<StoreData>()(
                   .then((response) => console.log("res server", response))
                   .catch((err) => console.log(err));
               }
-
-              console.log("cart list is ", state.userCart);
             } else {
               addItemToCart(state.cartList);
+              console.log("data is");
             }
           })
         );

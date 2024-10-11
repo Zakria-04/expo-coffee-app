@@ -20,12 +20,18 @@ const Home = () => {
   const [data, setData] = useState(CoffeeList);
   const { user, userCart, cartList } = useStore();
 
+  const fun = () => {
+    return CoffeeList.map((v) => console.log("v is ", v));
+  };
+  // console.log(fun());
+
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.darkBlue}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.darkBlue }}>
       <View style={styles.container}>
         <ScrollView>
           <Header screen="Coffee-App" />
           <SearchItem setData={setData} coffeeList={CoffeeList} />
+
           <Category setData={setData} coffeeList={CoffeeList} />
           <RenderProducts data={data} />
         </ScrollView>

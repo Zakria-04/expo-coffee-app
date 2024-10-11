@@ -11,7 +11,6 @@ const Cart = () => {
   const { cartList, userCart, auth, calculateTotalCart, cartTotal } =
     useStore();
   const data = auth ? userCart : cartList;
-  console.log("my cart total iss", cartList);
 
   useEffect(() => {
     calculateTotalCart();
