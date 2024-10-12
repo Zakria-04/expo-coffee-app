@@ -8,10 +8,11 @@ import {
 import React, { useState } from "react";
 import { useStore } from "@/store/store";
 import { COLORS } from "@/assets/themes/colors";
+import { ListDataTypes } from "@/assets/res/types";
 
 interface CategoryProps {
-  setData: any;
-  coffeeList: any;
+  setData: React.Dispatch<React.SetStateAction<ListDataTypes[]>>;
+  coffeeList: ListDataTypes[];
 }
 
 const Category: React.FC<CategoryProps> = (props) => {
@@ -21,8 +22,8 @@ const Category: React.FC<CategoryProps> = (props) => {
   const category = [...new Set(coffeeList.map((item) => item.category))];
   category.unshift("All");
 
-  const changePressedCategoryColor = (inedx: number) => {
-    setPressedCategory(inedx);
+  const changePressedCategoryColor = (index: number) => {
+    setPressedCategory(index);
   };
 
   const filterItemByCategory = (val: string) => {
@@ -30,7 +31,7 @@ const Category: React.FC<CategoryProps> = (props) => {
       props.setData(props.coffeeList);
     } else {
       const filteredItem = props.coffeeList.filter(
-        (cate: any) => cate.category === val
+        (cate: ListDataTypes) => cate.category === val
       );
       props.setData(filteredItem);
     }
@@ -39,7 +40,7 @@ const Category: React.FC<CategoryProps> = (props) => {
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {category.map((cate, index) => (
+        {category.map((cate: string, index: number) => (
           <View key={index}>
             <TouchableOpacity
               onPress={() => {

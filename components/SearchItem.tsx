@@ -1,10 +1,11 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import { COLORS } from "@/assets/themes/colors";
+import { ListDataTypes } from "@/assets/res/types";
 
 interface SearchItemProps {
-  setData: any;
-  coffeeList: any;
+  setData: React.Dispatch<React.SetStateAction<ListDataTypes[]>>;
+  coffeeList: ListDataTypes[];
 }
 
 const SearchItem: React.FC<SearchItemProps> = (props) => {

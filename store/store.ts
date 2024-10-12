@@ -10,68 +10,72 @@ import {
   signinUser,
   updateUser,
 } from "@/assets/res/api";
-
-type ListDataTypes = {
-  date: any;
-  id: number;
-  category: string;
-  name: string;
-  description: string;
-  image: any;
-  detailsImg: string;
-  prices: any;
-  price?: number;
-  size?: string;
-  ingredients: string;
-  average_rating: number;
-  favorite: boolean;
-  quantity: number;
-};
+import { ListDataTypes } from "@/assets/res/types";
 
 type StoreData = {
   coffeeList: ListDataTypes[];
-  favoriteList: ListDataTypes[];
-  cartList: ListDataTypes[];
-  orderHistory: ListDataTypes[];
+
+  // user signed in data
+  userCart: ListDataTypes[];
+  userFavorite: ListDataTypes[];
   userOrderHistory: ListDataTypes[];
+
+  // user not signed in data
+  cartList: ListDataTypes[];
+  favoriteList: ListDataTypes[];
+  orderHistory: ListDataTypes[];
+
   cartTotal: number;
-  imageURL: string;
+  imageURL: string | null;
   user: any;
   auth: boolean;
   isLoading: boolean;
   error: string | null;
-  userCart: any;
-  userFavorite: any;
+
+  // fetch data function
   fetchStoreData: () => Promise<void>;
-  addToFavorite: (id: number) => void;
-  addToCart: (data: any, selectedSize: any) => void;
-  increaseQuantity: (id: any, size: any) => void;
-  decreaseQuantity: (id: any, size: any) => void;
-  removeItemFromCart: (id: number, quantity: number) => void;
-  calculateTotalCart: () => void;
+
+  // user functions
   logUser: (form: any) => Promise<void>;
   signupUser: (form: any) => Promise<void>;
   logoutUser: () => void;
   deleteAccount: (id: string) => Promise<void>;
+
+  // cart functions
+  addToCart: (data: any, selectedSize: any) => void;
+  increaseQuantity: (id: number, size: string) => void;
+  decreaseQuantity: (id: number, size: string) => void;
+  removeItemFromCart: (id: number, quantity: number) => void;
+  calculateTotalCart: () => void;
   placeOrder: () => void;
+
+  // favorite functions
+  addToFavorite: (id: number) => void;
 };
 
 export const useStore = create<StoreData>()(
   persist(
     (set) => ({
+      // store products
       coffeeList: [],
+
+      // user signed in data
+      user: [],
+      auth: false,
+      imageURL: null,
+      userCart: [],
+      userFavorite: [],
+      userOrderHistory: [],
+
+      // user not signed in data
       favoriteList: [],
       cartList: [],
       orderHistory: [],
-      userOrderHistory: [],
-      cartTotal: 0,
-      imageURL: "",
-      user: [],
-      auth: false,
+
+      // others
       isLoading: false,
       error: null,
-      userCart: [],
-      userFavorite: [],
+      cartTotal: 0,
       fetchStoreData: async () => {
         set({ isLoading: true, error: null });
         try {
@@ -139,10 +143,10 @@ export const useStore = create<StoreData>()(
           })
         );
       },
-      addToCart: (data: any, selectedSize: any) => {
+      addToCart: (data, selectedSize) => {
         set(
           produce((state) => {
-            const addItemToCart = (cartData: any) => {
+            const addItemToCart = (cartData: ListDataTypes[]) => {
               const existingItemIndex = cartData.findIndex(
                 (item: any) => item.id === data.id
               );

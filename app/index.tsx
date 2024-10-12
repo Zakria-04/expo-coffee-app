@@ -8,7 +8,7 @@ import { getProducts } from "@/assets/res/api";
 import Loading from "@/components/Loading";
 
 const Index = () => {
-  const { fetchStoreData, isLoading, coffeeList } = useStore();
+  const { fetchStoreData, isLoading } = useStore();
   useEffect(() => {
     fetchStoreData().then(() => {
       router.replace("/home");

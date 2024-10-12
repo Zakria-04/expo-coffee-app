@@ -14,25 +14,23 @@ import SearchItem from "@/components/SearchItem";
 import Category from "@/components/Category";
 import { useStore } from "@/store/store";
 import RenderProducts from "@/components/RenderProducts";
+import { ListDataTypes } from "@/assets/res/types";
 
 const Home = () => {
   const CoffeeList = useStore((state) => state.coffeeList);
-  const [data, setData] = useState(CoffeeList);
-  const { user, userCart, cartList } = useStore();
-
-  const fun = () => {
-    return CoffeeList.map((v) => console.log("v is ", v));
-  };
-  // console.log(fun());
+  const [data, setData] = useState<ListDataTypes[]>(CoffeeList);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.darkBlue }}>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <ScrollView>
+          {/* Header */}
           <Header screen="Coffee-App" />
+          {/* Search Bar */}
           <SearchItem setData={setData} coffeeList={CoffeeList} />
-
+          {/* Category */}
           <Category setData={setData} coffeeList={CoffeeList} />
+          {/* Render Data */}
           <RenderProducts data={data} />
         </ScrollView>
       </View>
@@ -44,6 +42,9 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  safeArea: {
     flex: 1,
     backgroundColor: COLORS.darkBlue,
   },

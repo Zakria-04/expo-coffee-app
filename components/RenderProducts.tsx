@@ -2,6 +2,12 @@ import { FlatList, ListRenderItem, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Products from "./Products";
 
+interface PriceTypes {
+  price: number;
+  size: "S" | "M" | "L";
+  quantity: number;
+}
+
 interface ProductData {
   id: number;
   category: string;
@@ -9,7 +15,7 @@ interface ProductData {
   description: string;
   image: string;
   detailsImg: string;
-  prices: any;
+  prices: PriceTypes[];
   favorite: boolean;
   quantity: number;
 }

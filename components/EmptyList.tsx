@@ -6,8 +6,8 @@ import { COLORS } from "@/assets/themes/colors";
 
 interface EmptyListProps {
   message: string;
-  icon: any;
-  color: any;
+  icon: keyof typeof Ionicons.glyphMap;
+  color: string;
 }
 
 const EmptyList: React.FC<EmptyListProps> = (props) => {

@@ -20,7 +20,7 @@ const Favorite = () => {
           ) : (
             <View>
               <Header screen="Favorite List" />
-              <RenderFavorite data={data} coffeeID={1} />
+              <RenderFavorite data={data} />
             </View>
           )}
         </ScrollView>

@@ -12,15 +12,15 @@ import React from "react";
 import DetailsHeader from "./DetailsHeader";
 import { navigateToScreen } from "@/assets/res/utils";
 import { useStore } from "@/store/store";
+import { ListDataTypes } from "@/assets/res/types";
 
 interface RenderFavoriteProps {
-  data: any;
-  coffeeID: any;
+  data: ListDataTypes[];
 }
 
 const RenderFavorite: React.FC<RenderFavoriteProps> = (props) => {
   const { imageURL } = useStore();
-  const renderFavorite: ListRenderItem<any> = ({ item }) => {
+  const renderFavorite: ListRenderItem<ListDataTypes> = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => {

@@ -14,14 +14,20 @@ import { router } from "expo-router";
 import { navigateToScreen } from "@/assets/res/utils";
 import { useStore } from "@/store/store";
 
+interface PriceTypes {
+  price: number;
+  size: "S" | "M" | "L";
+  quantity: number;
+}
+
 interface ProductData {
   id: number;
   category: string;
   name: string;
   description: string;
-  image: any;
+  image: string;
   detailsImg: string;
-  prices: any;
+  prices: PriceTypes[];
   favorite: boolean;
   quantity: number;
 }
@@ -38,8 +44,6 @@ const Products: React.FC<ProductsProps> = (props) => {
   );
 
   const renderData: ListRenderItem<ProductData> = ({ item }) => {
-    const img = imageURL + item.image;
-
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity
@@ -51,7 +55,7 @@ const Products: React.FC<ProductsProps> = (props) => {
             source={{ uri: imageURL + item.image }}
             style={styles.itemImage}
             onError={() => {
-              console.error("image error");
+              console.error("please reload the app");
             }}
           />
           <Text style={styles.itemName}>{item.name}</Text>

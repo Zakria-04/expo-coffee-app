@@ -6,8 +6,8 @@ import { goBackOneStep } from "@/assets/res/utils";
 import { useStore } from "@/store/store";
 
 interface DetailsHeaderProps {
-  backBtn?: any;
-  coffeeID?: any;
+  backBtn?: keyof typeof Ionicons.glyphMap;
+  coffeeID?: number;
   favorite?: boolean;
 }
 
@@ -26,7 +26,9 @@ const DetailsHeader: React.FC<DetailsHeaderProps> = (props) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          addToFavorite(props.coffeeID);
+          if (props.coffeeID !== undefined) {
+            addToFavorite(props.coffeeID);
+          }
         }}
       >
         <Ionicons

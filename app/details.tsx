@@ -37,25 +37,6 @@ const Details = () => {
   const [selectedSize, setSelectedSize] = useState([]);
   const { imageURL } = useStore();
 
-  const addSelectedPriceAndSizeToCart = (data: any, selectedSize: any) => {
-    const inititalCart = {
-      id: data.id,
-      name: data.name,
-      description: data.description,
-      image: data.image,
-      detailsImage: data.detailsImg,
-      favorite: data.favorite,
-      quantity: data.quantity,
-      ingredients: data.ingredients,
-      average_rating: data.average_rating,
-      prices: data.prices,
-      price: selectedSize.price,
-      size: selectedSize.size,
-    };
-    // setCart(inititalCart as any);
-  };
-
-
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -92,7 +73,6 @@ const Details = () => {
                 setSizeBorderSelected(index);
                 setTotalPrice(val.price);
                 setSelectedSize(val);
-                // addSelectedPriceAndSizeToCart(getData, val);
               }}
             >
               <View
