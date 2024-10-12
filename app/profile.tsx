@@ -12,10 +12,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { goBackOneStep } from "@/assets/res/utils";
 import UserInfoModal from "@/components/Modals/UserInfoModal";
 import { useStore } from "@/store/store";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
 const Profile = () => {
-  const { auth, user, logoutUser, deleteAccount } = useStore();
+  const { auth, user, logoutUser, deleteAccount, isLoading } = useStore();
   const [userInfoModal, setUserInfoModal] = useState(false);
+
+  // if (isLoading) {
+  //   return <LoadingIndicator />;
+  // }
 
   return (
     <View style={styles.container}>
@@ -48,9 +53,10 @@ const Profile = () => {
         <View style={styles.profileDetailsContainer}>
           <TouchableOpacity
             onPress={() => {
-              deleteAccount(user._id);
-              logoutUser();
-              goBackOneStep();
+              deleteAccount(user._id).then(() => {
+                logoutUser();
+                goBackOneStep();
+              });
             }}
           >
             <Text style={styles.profileDetailsText}>delete my account</Text>

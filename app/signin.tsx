@@ -6,40 +6,31 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { COLORS } from "@/assets/themes/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { goBackOneStep, navigateToScreen } from "@/assets/res/utils";
 import SubmitForm from "@/components/SubmitForm";
 import { signinUser } from "@/assets/res/api";
 import { useStore } from "@/store/store";
+import LoadingIndicator from "@/components/LoadingIndicator";
+import { router } from "expo-router";
 
 const Signin = () => {
-  const { logUser } = useStore();
-  const [loading, setLoading] = useState(false);
+  const { logUser, isLoading, auth, error } = useStore();
 
   const signinUserFromAPI = async (form: any) => {
-    try {
-      setLoading(true);
-      const response = await signinUser(form);
-      if (response) {
-        setLoading(false);
-        logUser(response);
-        navigateToScreen("/home");
-      }
-    } catch (err) {
-      setLoading(false);
-      console.error("Error logging in:", err);
-    }
+    logUser(form);
   };
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size={"large"} color={COLORS.orange} />
-        <Text>loading...</Text>
-      </View>
-    );
+  useEffect(() => {
+    if (!isLoading && auth) {
+      navigateToScreen("/home");
+    }
+  }, [isLoading, auth]);
+
+  if (isLoading) {
+    return <LoadingIndicator />;
   }
 
   return (

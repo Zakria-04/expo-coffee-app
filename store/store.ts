@@ -3,7 +3,13 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware"; // Import the persist middleware
 import AsyncStorage from "@react-native-async-storage/async-storage"; // For AsyncStorage
 import Quantity from "./../components/Quantity";
-import { deleteAccount, getProducts, updateUser } from "@/assets/res/api";
+import {
+  deleteAccount,
+  getProducts,
+  registerUser,
+  signinUser,
+  updateUser,
+} from "@/assets/res/api";
 
 type ListDataTypes = {
   date: any;
@@ -43,9 +49,10 @@ type StoreData = {
   decreaseQuantity: (id: any, size: any) => void;
   removeItemFromCart: (id: number, quantity: number) => void;
   calculateTotalCart: () => void;
-  logUser: (data: any) => void;
+  logUser: (form: any) => Promise<void>;
+  signupUser: (form: any) => Promise<void>;
   logoutUser: () => void;
-  deleteAccount: (id: string) => void;
+  deleteAccount: (id: string) => Promise<void>;
   placeOrder: () => void;
 };
 
@@ -298,45 +305,69 @@ export const useStore = create<StoreData>()(
           })
         );
       },
-      logUser: (data) => {
-        set(
-          produce((state) => {
-            state.auth = true;
-            state.user = data;
-            state.userCart = data.userCart || [];
-            state.userFavorite = data.userFavorite || [];
-            state.userOrderHistory = data.userOrderHistory || [];
-          })
-        );
+      logUser: async (blog) => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await signinUser(blog);
+          set({
+            isLoading: false,
+            auth: true,
+            error: null,
+            user: response,
+            userCart: response.userCart || [],
+            userFavorite: response.userFavorite || [],
+            userOrderHistory: response.userOrderHistory || [],
+          });
+          console.log("user signed in successfully!");
+        } catch (err) {
+          set({ error: "Error signing in user", isLoading: false });
+          console.error("error message ", err);
+        }
+      },
+      signupUser: async (blog) => {
+        set({ isLoading: true, error: null });
+        try {
+          set({ isLoading: false, error: null });
+          const response = await registerUser(blog);
+          console.log("user has been created successfully!");
+
+          return response;
+        } catch (err) {
+          set({ error: "Error on creating new account", isLoading: false });
+          console.error("error with register new user", err);
+        }
       },
       logoutUser: () => {
-        set(
-          produce((state) => {
-            state.userCart = [];
-            state.userFavorite = [];
-            state.user = [];
-            state.userOrderHistory = [];
-            state.auth = false;
-          })
-        );
+        set({
+          userCart: [],
+          userFavorite: [],
+          user: [],
+          userOrderHistory: [],
+          auth: false,
+        });
       },
-      deleteAccount: (id) => {
-        set(
-          produce((state) => {
-            if (state.user._id === id) {
-              const blog = {
-                userID: id,
-              };
-              deleteAccount(blog)
-                .then((response) => {
-                  console.log("user has been deleted ", response);
-                })
-                .catch((err) => {
-                  console.error("error with delete account", err);
+      deleteAccount: async (id) => {
+        set({ isLoading: true, error: null });
+        set((state) => {
+          if (state.user._id === id) {
+            const userID = {
+              userID: id,
+            };
+            deleteAccount(userID)
+              .then((response) => {
+                set({ isLoading: false, error: null, user: null });
+                console.log("user has been deleted successfully!");
+              })
+              .catch((err) => {
+                set({
+                  isLoading: false,
+                  error: "error with deleting user account",
                 });
-            }
-          })
-        );
+                console.error("error message ", err);
+              });
+          }
+          return state;
+        });
       },
       placeOrder: () => {
         set(
