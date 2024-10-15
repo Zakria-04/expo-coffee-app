@@ -4,36 +4,28 @@ import Quantity from "./Quantity";
 import { COLORS } from "@/assets/themes/colors";
 import index from "./../app/index";
 import { useStore } from "@/store/store";
+import { ListDataTypes, PriceTypes } from "@/assets/res/types";
 
 interface MultipleCartItemProps {
-  item: any;
+  item: ListDataTypes;
 }
 
 const MultipleCartItem: React.FC<MultipleCartItemProps> = (props) => {
   const { imageURL } = useStore();
-  const { name, ingredients, image, size, price, prices } = props.item;
+  const { name, ingredients, image, prices } = props.item;
 
   const [cartItemsTotal, setCartItemsTotal] = useState<number>(0);
-
-  // const [totalPrice, setTotalPrice] = useState(
-  //   prices.map((price: any) => price.price)
-  // );
 
   const [totalPrice, setTotalPrice] = useState(
     prices.reduce((sum: number, price: any) => sum + price.price, 0)
   );
 
-  // console.log("Total price:", totalPrice.toFixed(2));
-
   useEffect(() => {
-    let newTotalPrice = prices.reduce((acc: number, val: any) => {
+    let newTotalPrice = prices.reduce((acc: number, val: PriceTypes) => {
       return acc + val.price * val.quantity;
     }, 0);
 
-    // console.log("calc",calc);
-
     setCartItemsTotal(newTotalPrice);
-    // console.log("new total", newTotalPrice);
   }, [prices]);
 
   return (

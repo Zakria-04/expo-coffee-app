@@ -1,10 +1,9 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Images } from "@/assets/images/images";
-import { Href, Redirect, router } from "expo-router";
+import { router } from "expo-router";
 import { COLORS } from "@/assets/themes/colors";
 import { useStore } from "@/store/store";
-import { getProducts } from "@/assets/res/api";
+
 import Loading from "@/components/Loading";
 
 const Index = () => {

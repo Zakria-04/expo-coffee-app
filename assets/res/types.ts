@@ -1,9 +1,8 @@
-
-interface PriceTypes {
-    price: number;
-    size: "S" | "M" | "L";
-    quantity: number
-  }
+export interface PriceTypes {
+  price: number;
+  size: "S" | "M" | "L";
+  quantity: number;
+}
 
 export interface ListDataTypes {
   id: number;
@@ -19,4 +18,9 @@ export interface ListDataTypes {
   average_rating: number;
   favorite: boolean;
   quantity: number;
+}
+
+export interface OrderHistoryTypes {
+  date: string;
+  ordersItem: ListDataTypes[];
 }

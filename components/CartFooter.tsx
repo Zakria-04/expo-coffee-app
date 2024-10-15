@@ -8,10 +8,7 @@ interface CartFooterProps {
 }
 
 const CartFooter: React.FC<CartFooterProps> = (props) => {
-  const { userCart, cartList, auth, calculateTotalCart, placeOrder } =
-    useStore();
-
-  const currentUser = auth ? userCart : cartList;
+  const { placeOrder } = useStore();
 
   return (
     <View style={styles.container}>

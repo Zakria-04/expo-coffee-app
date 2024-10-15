@@ -10,7 +10,7 @@ import {
   signinUser,
   updateUser,
 } from "@/assets/res/api";
-import { ListDataTypes } from "@/assets/res/types";
+import { OrderHistoryTypes, ListDataTypes } from "@/assets/res/types";
 
 type StoreData = {
   coffeeList: ListDataTypes[];
@@ -18,12 +18,12 @@ type StoreData = {
   // user signed in data
   userCart: ListDataTypes[];
   userFavorite: ListDataTypes[];
-  userOrderHistory: ListDataTypes[];
+  userOrderHistory: OrderHistoryTypes[];
 
   // user not signed in data
   cartList: ListDataTypes[];
   favoriteList: ListDataTypes[];
-  orderHistory: ListDataTypes[];
+  orderHistory: OrderHistoryTypes[];
 
   cartTotal: number;
   imageURL: string | null;

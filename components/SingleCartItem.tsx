@@ -3,20 +3,19 @@ import React, { useState } from "react";
 import Quantity from "./Quantity";
 import { COLORS } from "@/assets/themes/colors";
 import { useStore } from "@/store/store";
+import { ListDataTypes, PriceTypes } from "@/assets/res/types";
 
 interface SingleCartItemProps {
-  item: any;
+  item: ListDataTypes;
 }
 
 const SingleCartItem: React.FC<SingleCartItemProps> = (props) => {
   const { cartList, imageURL } = useStore();
-  const { name, ingredients, image, size, price, prices } = props.item;
+  const { name, ingredients, image, prices } = props.item;
 
   const [totalPrice, setTotalPrice] = useState(
-    prices.reduce((sum: number, price: any) => sum + price.price, 0)
+    prices.reduce((sum: number, price: PriceTypes) => sum + price.price, 0)
   );
-
-  // console.log("Total price:", totalPrice.toFixed(2));
 
   return (
     <View style={styles.container}>
@@ -24,7 +23,7 @@ const SingleCartItem: React.FC<SingleCartItemProps> = (props) => {
       <View style={styles.itemContainer}>
         <Text style={styles.itemName}>{name}</Text>
         <Text style={styles.itemIngredients}>with {ingredients}</Text>
-        {props.item.prices.map((val: any, index: number) => {
+        {props.item.prices.map((val: PriceTypes, index: number) => {
           const renderSizeBasedOnQuantity = val.quantity;
           if (renderSizeBasedOnQuantity) {
             return (
@@ -40,7 +39,7 @@ const SingleCartItem: React.FC<SingleCartItemProps> = (props) => {
                 <View style={{ marginTop: 20 }}>
                   <Quantity
                     quantity={val.quantity}
-                    id={val.key}
+                    id={index}
                     size={val.size}
                     newID={props.item.id}
                     price={val.price}

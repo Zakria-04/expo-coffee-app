@@ -1,5 +1,4 @@
 import {
-  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -9,17 +8,21 @@ import {
 import React, { useEffect, useState } from "react";
 import { COLORS } from "@/assets/themes/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { goBackOneStep, navigateToScreen } from "@/assets/res/utils";
+import { navigateToScreen } from "@/assets/res/utils";
 import SubmitForm from "@/components/SubmitForm";
-import { signinUser } from "@/assets/res/api";
 import { useStore } from "@/store/store";
 import LoadingIndicator from "@/components/LoadingIndicator";
-import { router } from "expo-router";
+
+interface SigninTypes {
+  userName: string;
+  userPass: string;
+  email?: string;
+}
 
 const Signin = () => {
-  const { logUser, isLoading, auth, error } = useStore();
+  const { logUser, isLoading, auth } = useStore();
 
-  const signinUserFromAPI = async (form: any) => {
+  const signinUserFromAPI = async (form: SigninTypes) => {
     logUser(form);
   };
 

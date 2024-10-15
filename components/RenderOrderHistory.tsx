@@ -2,6 +2,11 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { useStore } from "@/store/store";
 import { COLORS } from "@/assets/themes/colors";
+import {
+  ListDataTypes,
+  OrderHistoryTypes,
+  PriceTypes,
+} from "@/assets/res/types";
 
 const RenderOrderHistory = () => {
   const { orderHistory, imageURL, userOrderHistory, auth } = useStore();
@@ -9,15 +14,13 @@ const RenderOrderHistory = () => {
   const data = auth ? userOrderHistory : orderHistory;
 
   const renderOrderHistory = () => {
-    return data.map((item: any, index: number) => {
-      console.log(item.date);
-
+    return data.map((item: OrderHistoryTypes, index: number) => {
       return (
         <View key={index}>
           <View style={styles.itemBorder}>
             <Text style={[styles.itemDate, { fontSize: 20 }]}>order date:</Text>
             <Text style={styles.itemDate}>{item.date}</Text>
-            {item.ordersItem.map((val: any) => (
+            {item.ordersItem.map((val: ListDataTypes) => (
               <View key={val.id}>
                 <View style={styles.itemContainer}>
                   <Image
@@ -31,7 +34,7 @@ const RenderOrderHistory = () => {
                     </Text>
                   </View>
                 </View>
-                {val.prices.map((price: any, index: number) => (
+                {val.prices.map((price: PriceTypes, index: number) => (
                   <View key={index} style={styles.priceContainer}>
                     <Text style={styles.itemPirce}>{price.price}$</Text>
                     <Text style={styles.itemPirce}>x{price.quantity}</Text>

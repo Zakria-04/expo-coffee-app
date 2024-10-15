@@ -6,10 +6,10 @@ import { useStore } from "@/store/store";
 
 interface QuantityProps {
   quantity: number;
-  id: number;
+  id: any;
   size: any;
-  newID: any;
-  price: any;
+  newID: number;
+  price: number;
   setTotalPrice: any;
   val: any;
 }

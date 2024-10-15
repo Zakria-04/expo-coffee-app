@@ -26,7 +26,7 @@ const SubmitForm: React.FC<SubmitFormProps> = (props) => {
     email: "",
   });
 
-  const handleFormTextChange = (key: string, value: any) => {
+  const handleFormTextChange = (key: string, value: string) => {
     setForm({
       ...form,
       [key]: value,

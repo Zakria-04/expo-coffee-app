@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/assets/themes/colors";
 import { goBackOneStep } from "@/assets/res/utils";
 import { useStore } from "@/store/store";
+import { ListDataTypes } from "@/assets/res/types";
 
 interface DetailsHeaderProps {
   backBtn?: keyof typeof Ionicons.glyphMap;
@@ -16,7 +17,7 @@ const DetailsHeader: React.FC<DetailsHeaderProps> = (props) => {
   const data = auth ? userFavorite : favoriteList;
 
   const checkIFCofeeIDInFavoriteList = data.some(
-    (id: any) => id.id === props.coffeeID
+    (id: ListDataTypes) => id.id === props.coffeeID
   );
 
   return (

@@ -14,7 +14,7 @@ interface DetailsFooterProps {
 }
 
 const DetailsFooter: React.FC<DetailsFooterProps> = (props) => {
-  const { coffeeList, addToCart, user, userCart } = useStore();
+  const { addToCart, user, userCart } = useStore();
 
   return (
     <View style={styles.container}>

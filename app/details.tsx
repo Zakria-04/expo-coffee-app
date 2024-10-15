@@ -15,6 +15,7 @@ import DetailsFooter from "@/components/DetailsFooter";
 import DetailsHeader from "@/components/DetailsHeader";
 import { Ionicons } from "@expo/vector-icons";
 import { useStore } from "@/store/store";
+import { PriceTypes } from "@/assets/res/types";
 
 const Details = () => {
   const { data } = useLocalSearchParams();
@@ -32,9 +33,9 @@ const Details = () => {
     average_rating,
   } = getData;
 
-  const [sizeBorderSelected, setSizeBorderSelected] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(prices[0].price);
-  const [selectedSize, setSelectedSize] = useState([]);
+  const [sizeBorderSelected, setSizeBorderSelected] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState<number>(prices[0].price);
+  const [selectedSize, setSelectedSize] = useState<PriceTypes[]>([]);
   const { imageURL } = useStore();
 
   return (
@@ -66,13 +67,13 @@ const Details = () => {
         </ImageBackground>
         <Text style={styles.productDescription}>{description}</Text>
         <View style={styles.sizeContainer}>
-          {prices.map((val: any, index: number) => (
+          {prices.map((val: PriceTypes, index: number) => (
             <TouchableOpacity
               key={index}
               onPress={() => {
                 setSizeBorderSelected(index);
                 setTotalPrice(val.price);
-                setSelectedSize(val);
+                setSelectedSize(val as any);
               }}
             >
               <View
@@ -101,7 +102,6 @@ const Details = () => {
           data={getData}
           price={totalPrice}
           selectedSize={selectedSize}
-          // cart={cart}
         />
       </ScrollView>
     </View>

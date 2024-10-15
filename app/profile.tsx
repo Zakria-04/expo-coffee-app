@@ -15,12 +15,8 @@ import { useStore } from "@/store/store";
 import LoadingIndicator from "@/components/LoadingIndicator";
 
 const Profile = () => {
-  const { auth, user, logoutUser, deleteAccount, isLoading } = useStore();
+  const { user, logoutUser, deleteAccount } = useStore();
   const [userInfoModal, setUserInfoModal] = useState(false);
-
-  // if (isLoading) {
-  //   return <LoadingIndicator />;
-  // }
 
   return (
     <View style={styles.container}>

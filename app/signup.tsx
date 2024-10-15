@@ -15,11 +15,16 @@ import { registerUser, signinUser } from "@/assets/res/api";
 import { useStore } from "@/store/store";
 import LoadingIndicator from "@/components/LoadingIndicator";
 
-const Signup = () => {
-  const { user, logUser, isLoading, signupUser, auth } = useStore();
-  const [loading, setLoading] = useState(false);
+interface SignupTypes {
+  userName: string;
+  userPass: string;
+  email?: string;
+}
 
-  const createNewUserFromAPI = async (form: any) => {
+const Signup = () => {
+  const { logUser, isLoading, signupUser } = useStore();
+
+  const createNewUserFromAPI = async (form: SignupTypes) => {
     signupUser(form).then(() => {
       logUser(form).then(() => {
         navigateToScreen("/home");

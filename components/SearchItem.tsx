@@ -9,11 +9,11 @@ interface SearchItemProps {
 }
 
 const SearchItem: React.FC<SearchItemProps> = (props) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
 
   const filterDataBySearch = (category: any) => {
     if (search != "") {
-      const filter = props.coffeeList.filter((item: any) =>
+      const filter = props.coffeeList.filter((item: ListDataTypes) =>
         item.category.toLowerCase().includes(category.toLowerCase())
       );
       props.setData(filter);

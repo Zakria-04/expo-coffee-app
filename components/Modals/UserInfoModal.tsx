@@ -25,7 +25,6 @@ const UserInfoModal: React.FC<UserInfoModalProps> = (props) => {
   const checkUserPass = async () => {
       const isValid = await bcrypt.compare(user.userPass, "123")
       console.log(isValid);
-
   };
 
   return (
