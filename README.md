@@ -1,43 +1,54 @@
-# Welcome to your Expo app 👋
+## Coffee Shop App - With Expo React Native
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+My project is a full-stack React Native application featuring user authentication, order history, an advanced cart system, and a favorites screen. It seamlessly integrates a Node.js backend with MongoDB, storing user data and orders. If a user is not signed in, cart items are saved locally using AsyncStorage. The app provides a smooth and modern user experience with dynamic coffee-related data, including detailed product information and sizes.
 
 ## Get started
 
-1. Install dependencies
+1. make sure you have node.js on your machine
+
+- Node.js: [download node.js](https://nodejs.org/en)
+
+2. download yarn incase you want to work with yarn insted of npm (recomended)
+
+   ```bash
+   npm install --global yarn
+   ```
+   
+3. Install dependencies
 
    ```bash
    yarn
    ```
 
-2. Start the app
+4. Start the app
 
    ```bash
     yarn start
    ```
 
-In the output, you'll find options to open the app in a
+## Technologies Used
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1. Frontend:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- React Native: For building the mobile app with modern and clean UI/UX.
+- Expo: For simplifying development and testing processes, along with Expo Router for navigation.
+- TypeScript: To add type safety and improve code quality.
+- Zustand: For efficient state management in React Native.
+- Async Storage: To handle data persistence for unsigned-in users (e.g., saving cart items).
 
+2. Backend:
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Node.js: For building the server-side of the application.
+- Express.js: To manage API endpoints efficiently.
+- MongoDB (NoSQL): For database management, storing user data, products, and order history.
+- TypeScript: For type safety and consistency in backend code.
+- Render.com: For hosting the backend services.
 
-## Learn more
+3. Tools: 
+- Android Studio: For testing on virtual Android devices.
+- Yarn: For managing project dependencies.
 
-To learn more about developing your project with Expo, look at the following resources:
+## Contributing
+If you find any issues or have suggestions, feel free to open an issue or create a pull request.
+my learning journey did not end and i can't wait to learn from you guys!
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
